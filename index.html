@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EJttinii | IT 서비스 기획자 포트폴리오</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Gowun+Batang:wght@400;700&family=Nunito:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ===== 디자인 토큰 (사진 10장 취향 분석 기반 디자인 시스템) ===== */
+:root {
+  --crimson: #C8102E;
+  --crimson-deep: #8F0A20;
+  --gold: #C9A24B;
+  --black: #0A0A0A;
+  --cream: #F4EEDF;
+  --beige: #D9C7A8;
+  --turquoise: #1FB5B0;
+  --cobalt: #2F6FD0;
+  --lime: #6BBF3A;
+  --magenta: #D6246E;
+  --orange: #F08A24;
+
+  --font-display: "Playfair Display", "Gowun Batang", "Noto Serif KR", Didot, serif;
+  --font-body: "Nunito", "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+
+  --step--1: 0.9rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.4rem;
+  --step-2: 2rem;
+  --step-3: clamp(2.4rem, 6vw, 4.25rem);
+  --measure: 36rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--black); color: var(--cream);
+  font-family: var(--font-body); font-size: var(--step-0); line-height: 1.85;
+  word-break: keep-all; overflow-wrap: break-word;
+}
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--turquoise); outline-offset: 3px; }
+.wrap { max-width: 64rem; margin: 0 auto; padding: 0 1.5rem; }
+
+/* 모드: 다크(막이 오르기 전, 커튼콜) / 라이트(무대 위) */
+.dark  { background: var(--black); color: var(--cream); }
+.light { background: var(--cream); color: var(--black); }
+
+/* 상단 바 */
+.top { position: sticky; top: 0; z-index: 5; background: rgba(10,10,10,.92); border-bottom: 1px solid rgba(201,162,75,.35); }
+.top .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-top: .9rem; padding-bottom: .9rem; flex-wrap: wrap; }
+.top strong { font-family: var(--font-display); font-size: 1.1rem; color: var(--gold); font-weight: 700; }
+.top nav a { margin-left: 1.4rem; text-decoration: none; font-size: var(--step--1); color: var(--cream); padding-bottom: 2px; border-bottom: 1px solid transparent; transition: border-color .2s, color .2s; }
+.top nav a:hover { color: var(--gold); border-color: var(--gold); }
+
+/* 인트로 */
+.hero { position: relative; overflow: hidden; padding: clamp(4rem, 12vw, 8.5rem) 0 clamp(4rem, 10vw, 7rem); }
+.hero .frame {
+  max-width: 44rem; padding: clamp(1.75rem, 5vw, 3.25rem);
+  border: 1px solid var(--gold); outline: 1px solid rgba(201,162,75,.4); outline-offset: 7px;
+}
+.hero h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--step-3); line-height: 1.3; letter-spacing: -.01em; margin: 0 0 1.5rem; }
+.hero p { margin: 0 0 1.75rem; max-width: var(--measure); color: var(--beige); }
+.facts { display: flex; flex-wrap: wrap; gap: .4rem 2rem; list-style: none; margin: 0; padding: 0; font-size: var(--step--1); color: var(--beige); }
+.facts b { color: var(--gold); font-weight: 700; margin-right: .4rem; }
+.dot { position: absolute; right: 12%; bottom: 3.5rem; width: 10px; height: 10px; border-radius: 50%; background: var(--crimson); }
+
+/* 막이 오르는 연출 (첫 로드 때 한 번) */
+.curtain { position: fixed; top: 0; bottom: 0; width: 51%; z-index: 20; pointer-events: none;
+  background: repeating-linear-gradient(90deg, var(--crimson-deep) 0, var(--crimson) 3.2rem, var(--crimson-deep) 6.4rem);
+  box-shadow: inset 0 0 6rem rgba(0,0,0,.45); animation-duration: 1.7s; animation-delay: .5s; animation-fill-mode: forwards; animation-timing-function: cubic-bezier(.65,0,.25,1); }
+.curtain.l { left: 0; animation-name: openL; }
+.curtain.r { right: 0; animation-name: openR; }
+@keyframes openL { to { transform: translateX(-105%); visibility: hidden; } }
+@keyframes openR { to { transform: translateX(105%); visibility: hidden; } }
+
+/* 공통 섹션 */
+section { padding: clamp(3rem, 8vw, 5.5rem) 0; }
+h2 { font-family: var(--font-display); font-size: var(--step-2); line-height: 1.4; margin: 0; }
+.cols { display: grid; grid-template-columns: 12rem 1fr; gap: 1rem 3rem; }
+.light h2 { color: var(--crimson); }
+.body p { margin: 0 0 1.25rem; max-width: var(--measure); }
+
+/* 프로젝트 */
+.card { border: 1px solid var(--black); outline: 1px solid var(--beige); outline-offset: 6px; padding: clamp(1.25rem, 3vw, 2rem); margin: 0 0 2.25rem 6px; max-width: 40rem; background: #fbf8ef; }
+dl.meta { margin: 0; display: grid; grid-template-columns: 6.5rem 1fr; gap: .7rem 1.25rem; }
+dl.meta dt { font-size: var(--step--1); font-weight: 700; color: var(--cobalt); padding-top: .15rem; }
+dl.meta dd { margin: 0; }
+
+/* 작업 히스토리 */
+.log { list-style: none; margin: 1.75rem 0 0; padding: 0; max-width: 40rem; border-left: 2px solid var(--turquoise); }
+.log li { position: relative; display: grid; grid-template-columns: 3.2rem 1fr; gap: .75rem; padding: .9rem 0 .9rem 1.5rem; }
+.log li::before { content: ""; position: absolute; left: -7px; top: 1.45rem; width: 12px; height: 12px; border-radius: 50%; background: var(--cream); border: 2px solid var(--turquoise); }
+.log li.change::before { background: var(--orange); border-color: var(--orange); }
+.log .ver { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: var(--step--1); color: var(--cobalt); padding-top: .2rem; font-weight: 700; }
+.log h3 { margin: 0; font-size: var(--step-0); }
+.log p { margin: 0; font-size: var(--step--1); line-height: 1.7; color: #4b4538; }
+.log mark { background: rgba(240,138,36,.32); color: inherit; padding: 0 .25em; border-radius: 2px; }
+.note { font-size: var(--step--1); color: #6b6455; margin-top: 1rem; }
+
+/* 나에 대하여 */
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 3rem; max-width: 46rem; }
+.pair h3 { font-family: var(--font-display); font-size: var(--step-1); margin: 0 0 .4rem; }
+.pair p { margin: 0; color: #4b4538; }
+.pair .a h3 { border-bottom: 3px solid var(--lime); display: inline-block; padding-bottom: 2px; }
+.pair .b h3 { border-bottom: 3px solid var(--magenta); display: inline-block; padding-bottom: 2px; }
+
+/* 커튼콜 */
+.closing { text-align: left; }
+.closing h2 { color: var(--gold); margin-bottom: 1.25rem; }
+.closing p { margin: 0 0 .25rem; color: var(--beige); }
+.closing a { text-decoration: none; border-bottom: 1px solid var(--gold); transition: color .25s, text-shadow .25s; }
+.closing a:hover { color: var(--gold); text-shadow: 0 0 14px rgba(201,162,75,.6); }
+
+@media (max-width: 720px) {
+  .cols, .pair { grid-template-columns: 1fr; }
+  dl.meta { grid-template-columns: 1fr; gap: .1rem; }
+  dl.meta dd { margin-bottom: .7rem; }
+  .top nav a:first-child { margin-left: 0; }
+  .dot { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .curtain { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="curtain l" aria-hidden="true"></div>
+<div class="curtain r" aria-hidden="true"></div>
+
+<header class="top">
+  <div class="wrap">
+    <strong>EJttinii</strong>
+    <nav aria-label="페이지 이동">
+      <a href="#project">프로젝트</a>
+      <a href="#history">작업 히스토리</a>
+      <a href="#about">나에 대하여</a>
+      <a href="#contact">연락처</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="dark hero">
+    <div class="wrap">
+      <div class="frame">
+        <h1>바뀌는 기획을 기록으로 붙잡는 서비스 기획자</h1>
+        <p>IT 회사에서 서비스를 기획합니다. 컨셉이 계속 바뀌는 상황에서도 변경 내용과 이유를 버전별로 남기며, 이용자에게 닿는 공지·메일·알림이 제대로 작동하도록 설계해 왔습니다.</p>
+        <ul class="facts">
+          <li><b>직무</b>IT 서비스 기획자</li>
+          <li><b>대표 경험</b>크리에이터 보상·창작 독려 서비스</li>
+        </ul>
+      </div>
+    </div>
+    <span class="dot" aria-hidden="true"></span>
+  </div>
+
+  <section id="project" class="light">
+    <div class="wrap cols">
+      <h2>대표 프로젝트</h2>
+      <div class="body">
+        <div class="card">
+          <dl class="meta">
+            <dt>서비스</dt>
+            <dd>좋은 콘텐츠를 작성하는 크리에이터에게 보상을 지급하고, 창작을 독려하는 서비스</dd>
+            <dt>역할</dt>
+            <dd>메인 기획자</dd>
+            <dt>담당 업무</dt>
+            <dd>이용자에게 가는 공지, 메일, 알림이 제대로 작동하도록 기획</dd>
+          </dl>
+        </div>
+        <p>이용자와 직접 소통하는 일을 맡은 것은 아니었습니다. 대신 이용자가 받는 메시지가 어떤 상황에서, 어떤 내용으로, 어떻게 전달될지를 설계하는 쪽을 맡았습니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="history" class="light" style="padding-top:0">
+    <div class="wrap cols">
+      <h2>작업 히스토리</h2>
+      <div class="body">
+        <p>서비스가 완벽히 정리되지 않은 상태에서 이용자 소통을 기획하다 보니, 메인 컨셉부터 계속 바뀌었습니다. 그때마다 같은 작업을 다시 해야 했습니다.</p>
+        <p>이 상황에서 저는 바뀐 내용을 버전별로 기록하고, 왜 바뀌어야 하는지 이유를 정리하면서 일했습니다.</p>
+        <ol class="log" aria-label="작업 흐름">
+          <li><span class="ver">v1</span><div><h3>서비스가 정리되기 전에 기획을 시작</h3><p>이용자 대상 공지·메일·알림 기획에 먼저 착수.</p></div></li>
+          <li class="change"><span class="ver">v2</span><div><h3><mark>메인 컨셉이 바뀜</mark></h3><p>컨셉이 바뀌면서 이미 만든 기획을 다시 작업.</p></div></li>
+          <li class="change"><span class="ver">v3</span><div><h3><mark>변경 내용을 버전별로 기록</mark></h3><p>무엇이 어떻게 바뀌었는지 한눈에 볼 수 있게 정리.</p></div></li>
+          <li class="change"><span class="ver">v4</span><div><h3><mark>변경 이유를 함께 정리</mark></h3><p>왜 바뀌어야 하는지를 남겨, 바뀐 내용을 설명할 수 있는 상태로 일함.</p></div></li>
+        </ol>
+        <p class="note">실제 버전명, 날짜, 구체적인 변경 사례로 교체하면 더 설득력 있는 섹션이 됩니다.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="light" style="padding-top:0">
+    <div class="wrap cols">
+      <h2>나에 대하여</h2>
+      <div class="body">
+        <div class="pair">
+          <div class="a"><h3>꼼꼼함</h3><p>주변에서 꼼꼼하다는 이야기를 자주 듣습니다. 기획에서는 변경을 놓치지 않고 기록하는 방식으로 드러났습니다.</p></div>
+          <div class="b"><h3>글쓰기와 읽기</h3><p>에세이와 소설을 쓰고, 장르를 가리지 않고 책을 읽습니다.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="dark closing">
+    <div class="wrap">
+      <h2>연락처</h2>
+      <p>GitHub <a href="https://github.com/EJttinii" target="_blank" rel="noopener">EJttinii</a></p>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>
